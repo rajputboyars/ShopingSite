@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react'
+import { useCallback, useEffect, useState} from 'react'
 import Cards from './Cards'
 import { Link } from 'react-router-dom';
 
@@ -6,22 +6,29 @@ import { Link } from 'react-router-dom';
 const ApiFetch = () => {
     const [cardsData, setCardsdata] = useState([]);
     const [input, setInput] = useState("")
-  
+
+
+
+
     const productsData = async() => {
       const response = await fetch(`https://dummyjson.com/products/search?q=${input}`)
       const productsdata = await response.json()
       const Data = productsdata.products
+      console.log(Data);
       setCardsdata(Data)
-      // console.log(data);
     };
-
+    // const localdata = JSON.parse(localStorage.getItem("cardsData"))
+    // console.log(localdata);
+    
+    // localdata ? setCardsdata(localdata) : productsData()
+    
+    
     useEffect(() => {
-      
-    productsData()
-      
+      // localStorage.setItem("cardsData",JSON.stringify(Data)) 
+      productsData()
     },[]);
   return (
-    <>  
+    <>
         <div>
           <div className="w-[600px] m-auto my-[20px] flex" >
             <input className=" pl-5 p-[10px] w-[500px] border border-zinc-400 rounded-3xl" type="text" value={input} onChange={(e) => setInput(e.target.value)}/>
@@ -29,22 +36,16 @@ const ApiFetch = () => {
           </div>
         </div>
         <div className={`w-[1600px] h-fit p-[10px] m-auto flex flex-wrap `}>
-        {
-          cardsData.map(({id,title,price,description,thumbnail}) => {
-            return(
-              <div key={id}>
-
-              <Link to={`/id/${id}`} >
-                <Cards title={title} price={price} description={description} thumbnail={thumbnail} id={id} />
-              </Link>
-              </div>
-            )
-            
-          })
-        }
-          
-      </div> 
-      
+          {
+            cardsData.map(({id,title,price,description,thumbnail}) => {
+              return(
+                <div key={id}>
+                  <Cards title={title} price={price} description={description} thumbnail={thumbnail} id={id} />
+                </div>
+              )
+            })
+          }
+        </div>
     </>
   )
 }

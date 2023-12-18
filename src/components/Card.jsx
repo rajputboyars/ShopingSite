@@ -6,7 +6,7 @@ import CartContext from './cartcontext/CartContext'
 const Card = () => {
     const [cardData, setCardData] = useState({})
     const {id} = useParams()
-    const {setCartData} = useContext(CartContext)
+    const {cartData,setCartData} = useContext(CartContext)
     const {
         images,
         title,
@@ -14,20 +14,51 @@ const Card = () => {
         description,
         thumbnail
     } = cardData
+    // console.log(thumbnail);
+    const [image, setImage] = useState(thumbnail);
+    const{cartPriceArray,setCartPriceArray} = useContext(CartContext)
+
 
     const renderData = async()=>{
         const response = await fetch(`https://dummyjson.com/products/${id}`)
         const data = await response.json()
         // console.log("card",data);
         setCardData(data)
+    }
 
+    // console.log(images ? images.length : '',"image lenght");
+
+    // const imageswep = ()=>{
+    //     setInterval(() => {
+    //         const count = 0
+    //         images ? (count < images.length ? count + 1 : count =)
+    //         // if(count < images.length){
+    //         //     count + 1
+    //         // }
+    //         console.log(count);
+            
+    //     }, 1000);
+    // }
+
+    const setThumbnail = (image) =>{
+        setImage(image)
     }
+
+
     const handelclick = () => {
-        setCartData((prev)=>[...prev,{id,title,description,price,thumbnail,images}])
-    }
+        if(cartData.find((x)=> x.id === id) && cartPriceArray.find((x)=> x.id === id) ){
+            setCartPriceArray(cartData)
+            setCartData(cartPriceArray)
+        }else{
+            setCartPriceArray((prev)=>[...prev,{price,id}])
+            setCartData((prev)=>[...prev,{id,title,description,price,thumbnail,images}])
+    }}
+
+
     useEffect(() => {
         
-    renderData()
+        renderData()
+        // imageswep()
         
     },[]);
   return (
@@ -38,14 +69,14 @@ const Card = () => {
             </div>
             <div className={`w-[800px] h-[500px] bg-slate-200 flex flex-row justify-between bg-gradient-to-l from-indigo-500 hover:bg-blue-200 hover:text-white m-auto rounded-lg`}>
                 <div >
-                    <img className={`w-[450px] h-[380px] m-[10px] rounded-md`} src={thumbnail} alt="thumbnail" />
+                    <img className={`w-[450px] h-[380px] m-[10px] rounded-md`} src={image ? image : thumbnail} alt="thumbnail" />
                     <div className='flex flex-row m-[10px] justify-between'>
 
                         {images &&
                             images.map((image, index)=>{
                                 return(
                                     <div key={index}>
-                                        <img className='h-[70px] w-[80px] m-2' src={image} alt={`${image}`} />
+                                        <img className='h-[70px] w-[80px] m-2' src={image} alt={`${image}`} onClick={()=>setThumbnail(image)} />
                                     </div>
                                 )
                             })
