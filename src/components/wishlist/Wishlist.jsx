@@ -20,14 +20,7 @@ const Wishlist = () => {
     // console.log("wishlistdata",wishlistData);
 
     // localStorage
-    const getLocalstorageData = () =>{
-        const localData = JSON.parse(localStorage.getItem("wishlistId"))
-        if(localData){
-            return localData
-        }else{
-            return []
-        }
-    }
+  
 // let wish =  getLocalstorageData();
 //    console.log(wish)
 //    if(wish.length > 0){
@@ -35,12 +28,21 @@ const Wishlist = () => {
 //    }
 
 
+  
+
 
     useEffect(() => {
-        localStorage.setItem("wishlistId",JSON.stringify(wishlistData))
-        setWishlistTotalPrice(total)
+        
+      
+
+const wishlistLocalData =   JSON.parse(localStorage.getItem("wishlistId")) || []
+  if(wishlistLocalData.length != 0){
+ setWishlistData(wishlistLocalData)
+  }
+  setWishlistTotalPrice(total)
+
         // getLocalstorageData()
-    }, [total,wishlistData]);
+    }, []);
 
   return (
     <>

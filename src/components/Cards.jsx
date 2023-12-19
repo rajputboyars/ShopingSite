@@ -11,15 +11,17 @@ const Cards = ({
     title,
     price,
     description,
-    thumbnail
+    thumbnail, 
+    wishlistflag,
+   
 }) => {
-
+     const [flag, setFlag] = useState(false)
     const{wishlistData,setWishlistData} = useContext(CartContext)
     const{wishlistTotalPrice,setWishlistTotalPriceArray} = useContext(CartContext)
-    const [flag, setFlag] = useState(false);
+    
     // console.log(flag);
 
-
+   
 
     // const addToCart =() =>{
     //     setCartData((prev)=>[...prev,{id,title,description,price,thumbnail}])
@@ -29,20 +31,29 @@ const Cards = ({
 
 
     const addWishlist = () =>{
+        let wishListFlag = true;
         setFlag(true)
+        const updateWishlistData = [...wishlistData, {id,title,description,price,thumbnail,wishListFlag}]
         if(wishlistData.find((x)=>x.id === id) && wishlistTotalPrice.find((x)=>x.id === id)){
             setWishlistData(wishlistData)
             setWishlistTotalPriceArray(wishlistTotalPrice)
         }
         else{
-            setWishlistData((prev)=> [...prev,{id,title,description,price,thumbnail,flag}])
+            setWishlistData( [...updateWishlistData])
             setWishlistTotalPriceArray((prev)=>[...prev,{price,id}])
         }
+        localStorage.setItem("wishlistItem", JSON.stringify(updateWishlistData))
         // setWishlistData((prev)=> [...prev,{id,title,description,price,thumbnail,flag}])
         // setWishlistTotalPriceArray((prev)=>[...prev,{price,id}])
         // console.log(wishlistTotalPrice);
         // console.log(wishlistData);
+       
     }
+  
+    useEffect(()=>{
+        setFlag(wishlistflag)
+      
+    })
     // console.log(wishlistData);
     return (
     <>

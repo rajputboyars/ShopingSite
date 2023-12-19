@@ -3,6 +3,8 @@ import { AiOutlineCloseSquare } from "react-icons/ai";
 import CartContext from '../cartcontext/CartContext';
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+
 
 
 const WishlistCard = ({title,price,thumbnail,description,id}) => {
@@ -35,7 +37,7 @@ const WishlistCard = ({title,price,thumbnail,description,id}) => {
   return (
     <>
         <div className="w-[300px] h-[330px] flex flex-col bg-slate-100 m-3 relative">
-            <div className=" absolute text-[35px] text-red-600 right-0 top-0" onClick={()=>removeItem(id)}><AiOutlineCloseSquare/></div>
+            <div className=" absolute text-[35px] text-red-600 right-[4px] top-[3px]" onClick={()=>removeItem(id)}><IoIosCloseCircleOutline className='text-white bg-red-600 rounded-full'/></div>
             <div className='m-2'>
                 <img className="w-[284px] h-[150px]" src={thumbnail} alt="thumbnail" />
             </div>
