@@ -1,45 +1,40 @@
-import { useCallback, useEffect, useState,useLayoutEffect} from 'react'
+import {  useContext, useEffect, useState} from 'react'
 import Cards from './Cards'
-import { Link } from 'react-router-dom';
-import { data } from 'autoprefixer';
+import CartContext from './cartcontext/CartContext';
+
 
 
 const ApiFetch = () => {
-    const [cardsData, setCardsdata] = useState([]);
-    const [input, setInput] = useState("")
-    const [data, setData] = useState([]);
+  const {cardsData, setCardsdata} = useContext(CartContext)
+  const {input, setInput} = useContext(CartContext)
 
+ 
 
-
-
-    const productsData = async() => {
+  const productsData = async() => {
+    try {
       const response = await fetch(`https://dummyjson.com/products/search?q=${input}`)
       const productsdata = await response.json()
       const Data = productsdata.products
       setCardsdata(Data)
-      const wishlistLocalData =   JSON.parse(localStorage.getItem("wishlistItem")) || []
+  const wishlistLocalData = JSON.parse(localStorage.getItem("wishListLocalData")) || []
       if(wishlistLocalData.length > 0){
-        let result = Data.filter(o1 => !wishlistLocalData.some(o2 => o1.id === o2.id));
-        const updateArr =[ ...wishlistLocalData, ...result]
-        cardsData.length = 0;
-           setCardsdata(updateArr.sort((a,b)=> a.id-b.id))
-          console.log(updateArr, "updatearrr=====")
+        const nonWishlistedData = Data?.filter(e1 => !wishlistLocalData.some(e2 => e2.id === e1.id));
+        const fetchProducts = [...nonWishlistedData, ...wishlistLocalData];
+        const sortProducts = [...fetchProducts].sort((a,b)=>a.id - b.id)
+        setCardsdata(sortProducts)
       }
-      
-      
+      // console.log("productsData",Data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-      // localStorage.setItem("cardsData",JSON.stringify(Data))
-
-    };
-    // const wishlistLocalData =   JSON.parse(localStorage.getItem("wishlistId")) || []
-    // console.log(wishlistLocalData);
-    localStorage.setItem("cardsData",JSON.stringify(data))
-    const localdata = JSON.parse(localStorage.getItem("cardsData"))
-
-
-    useEffect(() => {
+useEffect(()=>{   
       productsData()
-    },[]);
+},[])
+
+console.log(cardsData, "cardsdata-----")
+    
   return (
     <>
         <div>

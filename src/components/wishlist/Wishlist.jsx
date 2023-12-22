@@ -6,43 +6,34 @@ import { GiBeachBag } from "react-icons/gi";
 
 const Wishlist = () => {
     const {wishlistData,setWishlistData} = useContext(CartContext)
-    const {wishlistTotalPriceArray} = useContext(CartContext)
-    const{wishlistTotalPrice, setWishlistTotalPrice} = useContext(CartContext)
+    const {wishlistTotalPriceArray,setWishlistTotalPriceArray} = useContext(CartContext)
+    const {wishlistTotalPrice, setWishlistTotalPrice} = useContext(CartContext)
+    // console.log("wishlistTotalPrice",wishlistTotalPrice);
 
-    // console.log("wishlistprice",wishlistTotalPriceArray)
     const total = wishlistTotalPriceArray.reduce(
         (accumulator, {price}) => accumulator + price,
         0,
       );
-    // console.log("total",total);
-    // console.log("wishlistTotalPrice",wishlistTotalPrice);
-    // console.log("wishlistTotalPricearray",wishlistTotalPriceArray);
-    // console.log("wishlistdata",wishlistData);
+      localStorage.setItem("wishlistLocalTotalPrice", JSON.stringify(total))
 
-    // localStorage
-  
-// let wish =  getLocalstorageData();
-//    console.log(wish)
-//    if(wish.length > 0){
-//     wishlistData = wish || []
-//    }
-
-
-  
+      const wishlistLocalData = JSON.parse(localStorage.getItem("wishListLocalData"))
+      const wishlistLocalTotalPriceArray = JSON.parse(localStorage.getItem("wishlistLocalTotalPriceArray"))
+      const wishlistLocalTotalPrice = JSON.parse(localStorage.getItem("wishlistLocalTotalPrice"))
 
 
     useEffect(() => {
-        
-      
+        if(wishlistLocalData && wishlistLocalTotalPriceArray && wishlistLocalTotalPrice){
+            setWishlistData(wishlistLocalData)
+            setWishlistTotalPriceArray(wishlistLocalTotalPriceArray)
+            setWishlistTotalPrice(wishlistLocalTotalPrice)
+        }else{
 
-const wishlistLocalData =   JSON.parse(localStorage.getItem("wishlistId")) || []
-  if(wishlistLocalData.length != 0){
- setWishlistData(wishlistLocalData)
-  }
-  setWishlistTotalPrice(total)
+            setWishlistTotalPrice(total)
+        }
+
 
         // getLocalstorageData()
-    }, []);
+    }, [total]);
 
   return (
     <>

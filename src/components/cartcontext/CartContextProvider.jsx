@@ -1,5 +1,7 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import CartContext from './CartContext'
+import { data } from 'autoprefixer';
+
 
 const CartContextProvider = ({children}) => {
     const [cartData, setCartData] = useState([]);
@@ -8,8 +10,18 @@ const CartContextProvider = ({children}) => {
     const [wishlistTotalPriceArray, setWishlistTotalPriceArray] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [wishlistTotalPrice, setWishlistTotalPrice] = useState(0);
+    const [cardsData, setCardsdata] = useState([]);
+    const [input, setInput] = useState("")
+
+
+
+  
+
+  
+
+    
   return (
-    <CartContext.Provider value={{wishlistTotalPrice, setWishlistTotalPrice,cartData, setCartData,wishlistData,setWishlistData,cartPriceArray,setCartPriceArray,wishlistTotalPriceArray,setWishlistTotalPriceArray,totalPrice, setTotalPrice}}>
+    <CartContext.Provider value={{input, setInput,wishlistTotalPrice, setWishlistTotalPrice,cartData, setCartData,wishlistData,setWishlistData,cartPriceArray,setCartPriceArray,wishlistTotalPriceArray,setWishlistTotalPriceArray,totalPrice, setTotalPrice ,cardsData, setCardsdata}}>
         {children}
     </CartContext.Provider>
   )

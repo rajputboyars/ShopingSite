@@ -8,8 +8,8 @@ import { FaMinus } from "react-icons/fa";
 
 const CartCard = ({title,price,thumbnail,description,id}) => {
 
-    const{cartData,setCartData} = useContext(CartContext)
-    const{cartPriceArray,setCartPriceArray} = useContext(CartContext)
+    const {cartData,setCartData} = useContext(CartContext)
+    const {cartPriceArray,setCartPriceArray} = useContext(CartContext)
     const [itemCount, setItemCount] = useState(1);
     const {totalPrice,setTotalPrice} = useContext(CartContext)
 
@@ -19,19 +19,16 @@ const CartCard = ({title,price,thumbnail,description,id}) => {
         setCartData(restData)
         const restTotal = cartPriceArray.filter(({id}) => id !== Id)
         setCartPriceArray(restTotal)
-        // localStorage.removeItem(`id`)
     }
     const incCount = () =>{
         setItemCount(itemCount+1)
         setTotalPrice(totalPrice + price)
-        // console.log("total price inc count",totalPrice);
     }
     const decCount = () =>{
         if(itemCount>0){
             setItemCount(itemCount-1)
             setTotalPrice(totalPrice - price)
         }
-        // console.log("total price dec count",totalPrice);
     }
     
   return (

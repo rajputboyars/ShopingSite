@@ -16,23 +16,34 @@ const WishlistCard = ({title,price,thumbnail,description,id}) => {
 
     const removeItem = (Id) =>{
         const restData = wishlistData.filter(({id}) => id !== Id)
-        setWishlistData(restData)
+        localStorage.setItem("wishListLocalData", JSON.stringify([...restData]))
+        const wishlistLocalData = JSON.parse(localStorage.getItem("wishListLocalData"))
+        if(wishlistLocalData){
+            setWishlistData(wishlistLocalData)
+        }else{
+            setWishlistData(restData)
+        }
         const restTotal = wishlistTotalPriceArray.filter(({id}) => id !== Id)
-        setWishlistTotalPriceArray(restTotal)
+        localStorage.setItem("wishlistLocalTotalPriceArray", JSON.stringify([...restTotal]))
+        const wishlistLocalTotalPriceArray = JSON.parse(localStorage.getItem("wishlistLocalTotalPriceArray"))
+        if(wishlistLocalTotalPriceArray){
+            setWishlistTotalPriceArray(wishlistLocalTotalPriceArray)
+        }else{
+            setWishlistTotalPriceArray(restTotal)
+        }
     }
 
     const incCount = () =>{
         setItemCount(itemCount+1)
         setWishlistTotalPrice(wishlistTotalPrice + price)
-        console.log("total price inc count",wishlistTotalPrice);
+        // console.log("total price inc count",wishlistTotalPrice);
     }
     const decCount = () =>{
         if(itemCount>0){
             setItemCount(itemCount-1)
             setWishlistTotalPrice(wishlistTotalPrice - price)
         }
-        
-        console.log("total price dec count",wishlistTotalPrice);
+        // console.log("total price dec count",wishlistTotalPrice);
     }
   return (
     <>

@@ -12,33 +12,19 @@ const Cart = () => {
     const {cartData,setCartData} = useContext(CartContext)
     const {cartPriceArray} = useContext(CartContext)
     const {totalPrice,setTotalPrice} = useContext(CartContext)
-    // const {id} = cartPriceArray
-    
-    // console.log(cartPriceArray)
+
     const total = cartPriceArray.reduce(
         (accumulator, {price}) => accumulator + price,
         0,
     );
     
-    // localStorage
-    const getLocalstorageData = () =>{
-        const localData = JSON.parse(localStorage.getItem("cartId"))
-        if(localData){
-            return localData
-        }else{
-            return []
-        }
-    }
-    
-    // setTotalPrice(total)
-    // console.log("total" , total);
-    // console.log("totalprice",totalPrice);
+
+
     useEffect(() => {
-        localStorage.setItem("cartId",JSON.stringify(cartData))
+        // localStorage.setItem("cartId",JSON.stringify(cartData))
         setTotalPrice(total)
-        // setCartData(getLocalstorageData())
     }, [total]);
-    // console.log("cart data",cartData);
+
 
 
     

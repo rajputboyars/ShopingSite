@@ -15,53 +15,56 @@ const Cards = ({
     wishlistflag,
    
 }) => {
-     const [flag, setFlag] = useState(false)
+    const [flag, setFlag] = useState(false)
     const{wishlistData,setWishlistData} = useContext(CartContext)
-    const{wishlistTotalPrice,setWishlistTotalPriceArray} = useContext(CartContext)
-    
-    // console.log(flag);
-
-   
-
-    // const addToCart =() =>{
-    //     setCartData((prev)=>[...prev,{id,title,description,price,thumbnail}])
-        // setCartPriceArray((prev)=>[...prev,{price,id}])
-    // }
+    const{wishlistTotalPriceArray,setWishlistTotalPriceArray} = useContext(CartContext)
+    const {cardsData, setCardsdata} = useContext(CartContext)
 
 
+    const wishListLocalData = JSON.parse(localStorage.getItem("wishListLocalData")) || []
+    const wishlistLocalTotalPriceArray = JSON.parse(localStorage.getItem("wishlistLocalTotalPriceArray"))
 
     const addWishlist = () =>{
-        let wishListFlag = true;
+        let wishListFlag = true
         setFlag(true)
-        const updateWishlistData = [...wishlistData, {id,title,description,price,thumbnail,wishListFlag}]
-        if(wishlistData.find((x)=>x.id === id) && wishlistTotalPrice.find((x)=>x.id === id)){
+
+        if(wishlistData.find((x)=>x.id === id) && wishlistTotalPriceArray.find((x)=>x.id === id) ){
             setWishlistData(wishlistData)
-            setWishlistTotalPriceArray(wishlistTotalPrice)
+            setWishlistTotalPriceArray(wishlistTotalPriceArray)
         }
         else{
-            setWishlistData( [...updateWishlistData])
+            // console.log("flag",flag);
+            // console.log("wishlistTotalPrice",wishlistData);
+            setWishlistData( (prev)=>[...prev,{id,title,description,price,thumbnail, wishListFlag}])
             setWishlistTotalPriceArray((prev)=>[...prev,{price,id}])
         }
-        localStorage.setItem("wishlistItem", JSON.stringify(updateWishlistData))
-        // setWishlistData((prev)=> [...prev,{id,title,description,price,thumbnail,flag}])
-        // setWishlistTotalPriceArray((prev)=>[...prev,{price,id}])
-        // console.log(wishlistTotalPrice);
-        // console.log(wishlistData);
-       
+
+        const getLocalWishList = JSON.parse(localStorage.getItem("wishListLocalData")) || []
+        if(!wishListLocalData.find((x)=>x.id === id) ){
+            localStorage.setItem("wishListLocalData", JSON.stringify([...getLocalWishList,{id,title,description,price,thumbnail, wishListFlag}]))
+        }
+        localStorage.setItem("wishlistLocalTotalPriceArray", JSON.stringify([...wishlistTotalPriceArray]))
     }
-  
-    useEffect(()=>{
+    
+    
+       
+    
+
+    useEffect(() => {
         setFlag(wishlistflag)
-      
-    })
-    // console.log(wishlistData);
+        // setLocalData()
+        // localStorage.setItem("wishListLocalData", JSON.stringify([...wishlistData]))
+        // localStorage.setItem("wishlistLocalTotalPriceArray", JSON.stringify([...wishlistTotalPriceArray]))
+    }, []);
+console.log("component render cards---", flag)
+
     return (
     <>
         <div className={`w-[500px] h-[220px] flex flex-row bg-gradient-to-r from-indigo-500 rounded-md hover:bg-blue-300 hover:text-black m-2 justify-between`} >
             <div className={`w-[300px] h-[200px] `}>
                 <Link to={`/id/${id}`} >
                     <div className={`capitalize text-black text-left p-2 my-2 ml-3 font-bold`}>{title}</div>
-                    <div className={`capitalize text-black text-left p-1 my-2 ml-3`}>Price :- {price}</div>
+                    <div className={`capitalize text-black text-left p-1 my-2 ml-3`}>Price :- ₹{price}</div>
                     <div className={`capitalize text-black text-left p-1 my-2 ml-3 truncate`}>{description}</div>
                 </Link>
                 <div className="w-[250px] uppercase p-2 m-auto border border-white flex flex-row justify-center mt-6 rounded-lg font-[600] text-red-600 bg-yellow-300 hover:bg-yellow-600 hover:text-white active:text-red-600"onClick={addWishlist}>
